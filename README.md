@@ -1,38 +1,99 @@
-# Signature-based-pose-detection-authentication-system
-Signature-Based Pose Detection Authentication System using Computer Vision and Machine Learning for secure user authentication based on human body pose patterns
+# Vision-Based Pose Biometric Authentication System
 
 ## Overview
-This project implements a signature-based authentication system using human pose detection. 
-Instead of traditional passwords, users are authenticated based on unique body pose patterns 
-captured through a camera, making the system more secure and difficult to spoof.
+This project implements a **multi-factor authentication system** that combines:
+- Traditional credentials (username + password)
+- **Vision-based behavioral biometrics** using human pose signatures
+- **Temporal liveness detection** to prevent replay and spoofing attacks
+
+The system uses real-time webcam input and MediaPipe Pose estimation to extract
+pose landmarks and generate a **pose signature** unique to each user.
+
+---
 
 ## Key Features
-- Pose-based user authentication
-- Signature pattern matching using pose landmarks
-- Real-time pose detection
-- Improved security compared to password-based systems
+- 🔐 Username + password authentication
+- 🧍 Pose-based biometric verification
+- 🎥 Real-time webcam capture via browser
+- 🧠 Liveness detection using temporal variance
+- 🛡️ Spoof-resistant (no static image/video replay)
+- 🌐 Web-based interface using FastAPI + HTML/CSS/JS
 
-## Technologies Used
-- Python
-- MediaPipe Pose
-- OpenCV
-- NumPy
-- FastAPI (Backend API)
-- HTML, CSS (Frontend)
+---
 
-## How It Works
-1. The system captures the user's pose using a camera.
-2. Pose landmarks are extracted using MediaPipe.
-3. The extracted pose signature is stored during registration.
-4. During login, the current pose is compared with the stored signature.
-5. Authentication is granted if the similarity score is above a threshold.
+## Technology Stack
 
-## Group Project
-This project was developed as a **group project** as part of academic coursework.
+### Backend
+- **FastAPI** – REST API and server-side rendering
+- **SQLAlchemy** – ORM with SQLite database
+- **MediaPipe Pose** – Human pose landmark detection
+- **OpenCV** – Image processing
+- **NumPy / SciPy** – Mathematical computations
+- **Passlib (bcrypt)** – Secure password hashing
 
-### Team Members
-- Shrishti Gautam
--Anubhav Pandey
+### Frontend
+- HTML5
+- CSS3 (custom dark-classified UI)
+- Vanilla JavaScript
+- WebRTC (`getUserMedia`) for webcam access
+
+---
+
+## Project Structure
+
+POSE_ESTIMATOR_PROJECT/
+│
+├── app/
+│ ├── api/ # Authentication routes
+│ ├── core/ # Pose logic, security, liveness
+│ ├── db/ # Database models and session
+│ ├── static/ # CSS & JS
+│ ├── templates/ # HTML pages
+│ └── main.py # FastAPI entry point
+│
+├── pose_detector.py # MediaPipe pose extraction
+├── pose_landmarker_lite.task
+├── requirements.txt
+└── README.md
 
 
-This repository is my personal copy of the group project created for learning, demonstration, and placement purposes.
+
+---
+
+## Authentication Flow
+
+### Registration
+1. User enters username and password
+2. Webcam records multiple pose frames
+3. Pose landmarks are extracted
+4. A **pose signature vector** is computed
+5. Signature + hashed password are stored
+
+### Login
+1. User provides credentials
+2. Live pose is captured
+3. New pose signature is generated
+4. System compares stored vs live signature
+5. Liveness check ensures real movement
+6. Access granted only if all checks pass
+
+---
+
+## Liveness Detection Logic
+The system verifies:
+- **Total pose movement** over time
+- **Temporal variance** across pose vectors
+
+This prevents:
+- Static image attacks
+- Pre-recorded video replays
+- Screenshot spoofing
+
+---
+
+## Installation & Setup
+
+### 1. Create Virtual Environment
+```bash
+py -3.12 -m venv pose_env 
+pose_env\Scripts\activate
